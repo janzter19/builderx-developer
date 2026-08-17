@@ -44,6 +44,10 @@ git_value archive --format=tar --prefix=builderx/ HEAD | tar -xf - -C "$BUILD_RO
 npm ci --prefix "$STAGE_ROOT/frontend" --ignore-scripts
 npm run build --prefix "$STAGE_ROOT/frontend"
 
+# Dependencies are required to build the staged frontend, but must never ship
+# inside the installer archive. The target project installs them separately.
+rm -rf "${STAGE_ROOT}/frontend/node_modules"
+
 [[ -f "${STAGE_ROOT}/frontend/dist/.vite/manifest.json" ]] || die "Frontend build did not produce a Vite manifest."
 [[ -f "${STAGE_ROOT}/tools/builderx-bridge/server.mjs" ]] || die "The committed BuilderX bridge is missing."
 find "$STAGE_ROOT" -type f \( -name '.env' -o -name 'config.local.php' \) -print -quit | grep -q . && die "Release contains a local configuration file."
