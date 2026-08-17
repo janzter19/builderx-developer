@@ -125,6 +125,117 @@ stat -c '%U:%G %a %n' /var/www/html/developer \
   /var/www/html/developer/storage
 ~~~
 
+## Phase 4A: Apply folder permissions
+
+Use a shared group for the web application and the local BuilderX bridge. Do
+not recursively change ownership or permissions on the whole document root.
+
+~~~bash
+APP_ROOT=/var/www/html/developer
+WEB_USER=www-data
+SHARED_GROUP=builderx
+
+sudo groupadd --system "$SHARED_GROUP" 2>/dev/null || true
+sudo usermod -aG "$SHARED_GROUP" "$WEB_USER"
+sudo usermod -aG "$SHARED_GROUP" "$(id -un)"
+~~~
+
+After adding the current user to the group, start a new login session or fully
+restart VS Code so the new group is active.
+
+For a fresh installation, create only the application runtime folders that
+need web-server writes:
+
+~~~bash
+RUNTIME_DIRS=(
+  storage/logs
+  storage/exports
+  storage/imports
+  storage/queue
+  storage/reports
+  storage/uploads
+  storage/synchronization
+  storage/phase-note-attachments
+  storage/ai-jobs
+  storage/ai-memory
+  storage/ai-operations
+  storage/codex-communication
+  storage/coordinator-context
+  storage/sharingan-context
+)
+
+for relative_path in "${RUNTIME_DIRS[@]}"; do
+  sudo install -d -o "$WEB_USER" -g "$SHARED_GROUP" -m 2770 \
+    "$APP_ROOT/$relative_path"
+done
+~~~
+
+Backups and audit logs are more restricted and must not be part of the normal
+MCP file allowlist:
+
+~~~bash
+APP_ROOT=/var/www/html/developer
+WEB_USER=www-data
+sudo install -d -o "$WEB_USER" -g "$WEB_USER" -m 0700 \
+  "$APP_ROOT/storage/backups" "$APP_ROOT/storage/audit"
+~~~
+
+Repair an existing approved runtime folder narrowly, not the entire product:
+
+~~~bash
+APP_ROOT=/var/www/html/developer
+WEB_USER=www-data
+SHARED_GROUP=builderx
+RUNTIME_PATH="$APP_ROOT/storage/phase-note-attachments"
+sudo chown -R "$WEB_USER:$SHARED_GROUP" "$RUNTIME_PATH"
+sudo find "$RUNTIME_PATH" -type d -exec chmod 2770 {} +
+sudo find "$RUNTIME_PATH" -type f -exec chmod 0660 {} +
+~~~
+
+Local configuration must not be committed or publicly readable:
+
+~~~bash
+APP_ROOT=/var/www/html/developer
+WEB_USER=www-data
+sudo chown "$WEB_USER:$WEB_USER" "$APP_ROOT/phases/config.local.php"
+sudo chmod 0640 "$APP_ROOT/phases/config.local.php"
+~~~
+
+Apply the same owner and mode to the installer local configuration when the
+separate installer is present:
+
+~~~bash
+sudo chown www-data:www-data /var/www/html/_installer/config.local.php
+sudo chmod 0640 /var/www/html/_installer/config.local.php
+~~~
+
+Verify the permission boundary:
+
+~~~bash
+APP_ROOT=/var/www/html/developer
+WEB_USER=www-data
+id "$WEB_USER"
+id "$(id -un)"
+stat -c '%U:%G %a %n' \
+  "$APP_ROOT" \
+  "$APP_ROOT/storage" \
+  "$APP_ROOT/storage/logs" \
+  "$APP_ROOT/storage/phase-note-attachments" \
+  "$APP_ROOT/storage/backups" \
+  "$APP_ROOT/storage/audit" \
+  "$APP_ROOT/phases/config.local.php"
+~~~
+
+Expected policy:
+
+- source files: readable by the web server, but not writable by it;
+- normal runtime directories: www-data:builderx, mode 2770;
+- normal runtime files: www-data:builderx, mode 0660;
+- backups and audit: www-data:www-data, mode 0700;
+- local configuration: www-data:www-data, mode 0640;
+- storage, configuration, communication, and AI-memory paths denied from
+  public directory browsing and direct download.
+
 ## Phase 5: Locate and configure the installer
 
 The current Git repository contains the developer source. The installer is a
