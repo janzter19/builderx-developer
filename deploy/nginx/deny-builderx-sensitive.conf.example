@@ -1,0 +1,5 @@
+# Include this inside the product server/location configuration.
+location ^~ /storage/codex-communication/ { deny all; return 404; }
+location ^~ /storage/backups/ { deny all; return 404; }
+location ^~ /storage/audit/ { deny all; return 404; }
+location ~ /(?:^|/)config\.local\.php$ { deny all; return 404; }

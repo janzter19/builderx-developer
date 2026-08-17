@@ -1,0 +1,20 @@
+CREATE TABLE `data_record_5` (
+  `x_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `record_key` char(36) NOT NULL,
+  `branch_key` char(36) NOT NULL,
+  `project_key` char(36) NOT NULL,
+  `form_key` char(36) NOT NULL,
+  `record_status` enum('DRAFT','PENDING','APPROVED','REJECTED','ACTIVE','INACTIVE','ARCHIVED','DELETED') NOT NULL DEFAULT 'DRAFT',
+  `server_timestamp` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by_key` char(36) DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by_key` char(36) DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `deleted_by_key` char(36) DEFAULT NULL,
+  PRIMARY KEY (`x_id`),
+  UNIQUE KEY `uq_record_key` (`record_key`),
+  KEY `idx_branch_project` (`branch_key`,`project_key`),
+  KEY `idx_form_status` (`form_key`,`record_status`),
+  KEY `idx_created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

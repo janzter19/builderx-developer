@@ -1,0 +1,9 @@
+{
+  "name": "builderx-bridge",
+  "private": true,
+  "version": "1.5.1",
+  "description": "BuilderX loopback bridge for visible VS Code Codex handoffs",
+  "scripts": {
+    "check": "node --check server.mjs && node --check extension/extension.js"
+  }
+}

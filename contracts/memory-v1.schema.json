@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://builderx.local/contracts/memory-v1.schema.json",
+  "title": "BuilderX AI Memory v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["memory_id", "title", "content", "memory_type", "retrieval_types", "status", "review_status"],
+  "properties": {
+    "memory_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "title": {"type": "string", "minLength": 1, "maxLength": 240},
+    "content": {"type": "string", "minLength": 1, "maxLength": 100000},
+    "memory_type": {"type": "string", "enum": ["brand_rule", "decision", "instruction", "example", "task_result", "reference"]},
+    "retrieval_types": {"type": "array", "items": {"type": "string"}, "maxItems": 12},
+    "tags": {"type": "array", "items": {"type": "string"}, "maxItems": 30},
+    "metadata": {"type": "object"},
+    "status": {"type": "string", "enum": ["pending_approval", "approved", "archived", "rejected"]},
+    "review_status": {"type": "string", "enum": ["unreviewed", "approved", "rejected", "needs_revision"]},
+    "vault_path": {"type": ["string", "null"], "maxLength": 512}
+  }
+}

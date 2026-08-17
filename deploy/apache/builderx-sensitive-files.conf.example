@@ -1,0 +1,26 @@
+# Apache 2.4 VirtualHost or server-context configuration.
+# Adjust the paths if the product DocumentRoot changes.
+
+<Directory "/var/www/html/developer/storage/codex-communication">
+    Options -Indexes
+    Require all denied
+</Directory>
+
+<Directory "/var/www/html/developer/storage/ai-memory">
+    Options -Indexes
+    Require all denied
+</Directory>
+
+<Directory "/var/www/html/developer/storage/backups">
+    Options -Indexes
+    Require all denied
+</Directory>
+
+<Directory "/var/www/html/developer/storage/audit">
+    Options -Indexes
+    Require all denied
+</Directory>
+
+<FilesMatch "(^|/)config\.local\.php$">
+    Require all denied
+</FilesMatch>

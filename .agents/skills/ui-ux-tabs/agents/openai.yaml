@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI/UX Tabs"
+  short_description: "Accessible shadcn tabs guidance"
+  default_prompt: "Use $ui-ux-tabs to review this tab layout for fit, scrolling, and accessibility."

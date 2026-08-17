@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI/UX Main Layout"
+  short_description: "Consistent BuilderX page shell"
+  default_prompt: "Use $ui-ux-main to review this page shell and sticky footer layout."

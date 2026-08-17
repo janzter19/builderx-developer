@@ -1,0 +1,15 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${BUILDERX_DB_DATABASE:-builderx}
+      MYSQL_USER: ${BUILDERX_DB_USER:-builderx_user}
+      MYSQL_PASSWORD: ${BUILDERX_DB_PASSWORD:?Set BUILDERX_DB_PASSWORD before running docker compose.}
+      MYSQL_ROOT_PASSWORD: ${BUILDERX_DB_ROOT_PASSWORD:?Set BUILDERX_DB_ROOT_PASSWORD before running docker compose.}
+    ports:
+      - "3306:3306"
+    volumes:
+      - builderx_mysql:/var/lib/mysql
+
+volumes:
+  builderx_mysql:

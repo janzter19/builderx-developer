@@ -1,0 +1,26 @@
+{
+  "name": "builderx",
+  "displayName": "BuilderX",
+  "description": "BuilderX handoff and progress bridge for the visible OpenAI Codex chat in VS Code.",
+  "version": "1.5.1",
+  "publisher": "builderx",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onStartupFinished",
+    "onUri",
+    "onCommand:builderx.sendToCodex"
+  ],
+  "main": "extension.js",
+  "files": ["extension.js", "package.json", "README.md"],
+  "contributes": {
+    "commands": [
+      {
+        "command": "builderx.sendToCodex",
+        "title": "BuilderX: Send Message to Codex"
+      }
+    ]
+  }
+}

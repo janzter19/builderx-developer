@@ -1,0 +1,11 @@
+{
+  "_readme": [
+    "This is a scaffold placeholder. Dependencies will be locked when backend packages are installed."
+  ],
+  "content-hash": "",
+  "packages": [],
+  "packages-dev": [],
+  "platform": {
+    "php": ">=8.1"
+  }
+}

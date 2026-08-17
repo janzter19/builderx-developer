@@ -1,0 +1,15 @@
+[Unit]
+Description=BuilderX VS Code Codex bridge
+After=graphical-session.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/html/developer
+Environment=BUILDERX_WORKSPACE_ROOT=/var/www/html/developer
+Environment=BUILDERX_CODE_EXECUTABLE=/usr/bin/code
+ExecStart=/usr/local/bin/node /var/www/html/developer/tools/builderx-bridge/server.mjs
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

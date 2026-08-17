@@ -1,0 +1,31 @@
+<?php
+declare(strict_types=1);
+
+return [
+    'name' => '0010_create_builder_standard_field',
+    'up' => [
+        "CREATE TABLE IF NOT EXISTS builder_standard_field (
+            x_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            standard_field_key CHAR(36) NOT NULL UNIQUE,
+            field_name VARCHAR(80) NOT NULL UNIQUE,
+            field_type VARCHAR(160) NOT NULL,
+            field_length VARCHAR(40) NULL,
+            field_default VARCHAR(120) NULL,
+            is_nullable TINYINT(1) NOT NULL DEFAULT 1,
+            is_required TINYINT(1) NOT NULL DEFAULT 1,
+            is_indexed TINYINT(1) NOT NULL DEFAULT 0,
+            index_name VARCHAR(80) NULL,
+            index_columns JSON NULL,
+            schema_version INT UNSIGNED NOT NULL DEFAULT 1,
+            field_status ENUM('ACTIVE','INACTIVE','DELETED') NOT NULL DEFAULT 'ACTIVE',
+            field_sort_order INT UNSIGNED NOT NULL DEFAULT 0,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_builder_standard_field_status (field_status),
+            INDEX idx_builder_standard_field_order (field_sort_order)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+    ],
+    'down' => [
+        'DROP TABLE IF EXISTS builder_standard_field',
+    ],
+];

@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI/UX Modal"
+  short_description: "Accessible shadcn modal guidance"
+  default_prompt: "Use $ui-ux-modal to review this dialog for accessibility and layout."

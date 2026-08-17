@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://builderx.local/contracts/ai-task-v1.schema.json",
+  "title": "BuilderX AI Task v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "correlation_id",
+    "action",
+    "stage",
+    "specialist",
+    "status",
+    "input",
+    "permissions",
+    "attempt",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "parent_task_id": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "rephrase_text",
+        "validate_text",
+        "retrieve_context",
+        "specialist_handoff"
+      ]
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "Think",
+        "Design",
+        "Build",
+        "Validate",
+        "Document",
+        "Preserve"
+      ]
+    },
+    "specialist": {
+      "type": "string",
+      "enum": [
+        "coordinator",
+        "requirements",
+        "architecture",
+        "ui_ux",
+        "database",
+        "solution_design",
+        "frontend",
+        "backend",
+        "security",
+        "testing",
+        "accessibility",
+        "documentation",
+        "preservation",
+        "rephrase",
+        "grammar_validator"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "running",
+        "awaiting_approval",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50000
+        },
+        "style_profile": {
+          "type": ["string", "null"],
+          "maxLength": 128
+        },
+        "context_refs": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["write_scope", "allowed_paths"],
+      "properties": {
+        "write_scope": {
+          "type": "string",
+          "enum": [
+            "none",
+            "communication_only",
+            "build_allowlist",
+            "phase_manager_approval"
+          ]
+        },
+        "allowed_paths": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        }
+      }
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "output": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "rewritten_text": {
+          "type": "string",
+          "maxLength": 50000
+        },
+        "corrections": {
+          "type": "array",
+          "maxItems": 500,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["original", "replacement", "reason"],
+            "properties": {
+              "original": {"type": "string", "maxLength": 2000},
+              "replacement": {"type": "string", "maxLength": 2000},
+              "reason": {"type": "string", "maxLength": 2000}
+            }
+          }
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "source_refs": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {"type": "string", "maxLength": 512}
+        }
+      }
+    },
+    "error": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {"type": "string", "maxLength": 128},
+        "message": {"type": "string", "maxLength": 2000},
+        "retryable": {"type": "boolean"}
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

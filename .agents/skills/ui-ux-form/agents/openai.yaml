@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI/UX Form"
+  short_description: "Confirmed BuilderX form submissions"
+  default_prompt: "Use $ui-ux-form to review this form for confirmation, validation, and accessible submission behavior."

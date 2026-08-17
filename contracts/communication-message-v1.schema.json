@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://builderx.local/contracts/communication-message-v1.schema.json",
+  "title": "BuilderX Codex Communication Message v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "message_id",
+    "correlation_id",
+    "schema_version",
+    "message_type",
+    "direction",
+    "sender",
+    "recipient",
+    "status",
+    "created_at",
+    "payload"
+  ],
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "schema_version": {
+      "const": "communication-message-v1"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "ai_task",
+        "ai_task_result",
+        "approval_request",
+        "approval_result",
+        "health_check",
+        "health_result"
+      ]
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["builderx_to_codex", "codex_to_builderx"]
+    },
+    "sender": {
+      "type": "string",
+      "enum": ["builderx", "codex_desktop", "phase_manager", "mcp_server"]
+    },
+    "recipient": {
+      "type": "string",
+      "enum": ["builderx", "codex_desktop", "phase_manager", "mcp_server"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["queued", "delivered", "processed", "failed", "expired"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "payload": {
+      "type": "object"
+    },
+    "checksum": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

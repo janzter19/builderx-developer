@@ -1,0 +1,13 @@
+[Unit]
+Description=BuilderX www-data File Service socket
+
+[Socket]
+ListenStream=/run/builderx/builderx-file-service.sock
+SocketUser=www-data
+SocketGroup=builderx
+SocketMode=0660
+DirectoryMode=0770
+Accept=yes
+
+[Install]
+WantedBy=sockets.target

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Database Transactions"
+  short_description: "ADODB transactional persistence"
+  default_prompt: "Use $database-transaction to implement this write with ADODB transactions, validation, and read-back."

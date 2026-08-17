@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://builderx.local/contracts/approval-v1.schema.json",
+  "title": "BuilderX Approval v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["approval_id", "operation", "target", "target_hash", "status", "expires_at"],
+  "properties": {
+    "approval_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "operation": {"type": "string", "enum": ["delete", "move", "database", "backup", "audit"]},
+    "target": {"type": "string", "minLength": 1, "maxLength": 1024},
+    "target_hash": {"type": "string", "minLength": 1, "maxLength": 128},
+    "actor_user_key": {"type": ["string", "null"], "maxLength": 36},
+    "status": {"type": "string", "enum": ["pending", "approved", "consumed", "expired", "rejected"]},
+    "expires_at": {"type": "string", "format": "date-time"}
+  }
+}

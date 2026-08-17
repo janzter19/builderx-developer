@@ -1,0 +1,22 @@
+[Unit]
+Description=BuilderX local File Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=builderx
+UMask=0007
+WorkingDirectory=/var/www/html/developer
+Environment=BUILDERX_FILE_ROOT=/var/www/html/developer
+ExecStart=/usr/bin/php /var/www/html/developer/bin/builderx-file-service.php
+StandardInput=socket
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/www/html/developer
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
