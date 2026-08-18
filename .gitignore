@@ -44,5 +44,10 @@ backend/storage/framework/sessions/*
 backend/storage/framework/views/*
 !backend/storage/**/.gitkeep
 
+# Generated project database metadata and rollback artifacts are runtime state.
+backend/database/generated/**
+!backend/database/generated/**/
+!backend/database/generated/**/.gitkeep
+
 .DS_Store
 Thumbs.db
